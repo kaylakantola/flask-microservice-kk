@@ -1,13 +1,27 @@
-import os
 import json
+from flask import Flask, request
 import requests
-from flask import Flask, jsonify, request
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
+
 def read_input(r):
     request_data_json = json.loads(r.data.decode('utf-8'))
-    return request_data_json['data']
+    return request_data_json
+
+
+def validate_input(user_input):
+    if 'data' not in user_input:
+        return False
+
+    if type(user_input['data']) != str:
+        return False
+
+    if len(user_input['data']) < 1:
+        return False
+
+    return True
 
 
 def build_shoutcloud_payload(input):
@@ -36,14 +50,17 @@ def build_endpoint_response(text):
 def reverse_shout():
     try:
         user_input = read_input(request)
-        shoutcloud_payload = build_shoutcloud_payload(user_input)
+        valid_input = validate_input(user_input)
+
+        if valid_input is False:
+            return ({"error": f"Request body must contain 'data' parameter set to a string with a length greater than 0."}, 400)
+
+        shoutcloud_payload = build_shoutcloud_payload(user_input['data'])
         shoutcloud_response = post_to_shoutcloud(shoutcloud_payload)
         shoutcloud_response_reversed = reverse_text(shoutcloud_response)
         endpoint_response = build_endpoint_response(shoutcloud_response_reversed)
         return endpoint_response
+    except HTTPException as httpErr:
+        return httpErr
     except Exception as err:
-        print(err)
-        return "oh no"
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+        return ({"error": f"Something broke, here's a hint: {err}"}, 500)
