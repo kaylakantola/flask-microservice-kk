@@ -60,7 +60,5 @@ def reverse_shout():
         shoutcloud_response_reversed = reverse_text(shoutcloud_response)
         endpoint_response = build_endpoint_response(shoutcloud_response_reversed)
         return endpoint_response
-    except HTTPException as httpErr:
-        return httpErr
     except Exception as err:
         return ({"error": f"Something broke, here's a hint: {err}"}, 500)

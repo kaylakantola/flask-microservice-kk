@@ -147,5 +147,12 @@ flask run
 The terminal output should include the host your app is running on.
 
 
+## Deployment 
 
+
+
+## Testing 
+
+
+## Authentication and Authorization
 
