@@ -144,15 +144,36 @@ export FLASK_DEBUG=1
 flask run
 ```
 
-The terminal output should include the host your app is running on.
+The terminal output should include the host your app is running on, e.g., `Running on http://127.0.0.1:5000/ `.
 
 
 ## Deployment 
 
+This repo is set up with automated CI/CD.
 
+To deploy your changes to the cloud, there are two options:
+
+1. Push directly to the `main` branch (risky!)
+2. Set up a pull request into `main`, and include `/gcbrun` in the merge request description.
+
+### How does it work? 
+
+In the cloud environment, there is a [Build Trigger](https://cloud.google.com/build/docs/automating-builds/create-manage-triggers) connected to the GitHub repository.
+
+It's listening for pull requests to the `main` branch. On successful merge a build is executed.
+
+TO BE COMPLETED: 
+
+In an ideal future state, I would like to terraform the build trigger (rather than create thru the GUI). 
 
 ## Testing 
 
+TO BE COMPLETED
+
+1. Unit test
+2. Integration test
+3. Deploy test
 
 ## Authentication and Authorization
 
+TO BE COMPLETED
