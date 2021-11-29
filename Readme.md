@@ -154,7 +154,7 @@ This repo is set up with automated CI/CD.
 To deploy your changes to the cloud, there are two options:
 
 1. Push directly to the `main` branch (risky!)
-2. Set up a pull request into `main`, and include `/gcbrun` in the merge request description.
+2. Set up a pull request into `main`, and include `/gcbrun` in the merge request description (less risky!)
 
 ### How does it work? 
 
@@ -162,18 +162,75 @@ In the cloud environment, there is a [Build Trigger](https://cloud.google.com/bu
 
 It's listening for pull requests to the `main` branch. On successful merge a build is executed.
 
-TO BE COMPLETED: 
+**TO BE COMPLETED:**
 
 In an ideal future state, I would like to terraform the build trigger (rather than create thru the GUI). 
 
+Here's the YAML for the build trigger that would need to be transformed into IaC: 
+
+```yaml
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '--no-cache'
+      - '-t'
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      - .
+      - '-f'
+      - Dockerfile
+    id: Build
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+    id: Push
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    args:
+      - run
+      - services
+      - update
+      - $_SERVICE_NAME
+      - '--platform=managed'
+      - '--image=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      - >-
+        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS
+      - '--region=$_DEPLOY_REGION'
+      - '--quiet'
+    id: Deploy
+    entrypoint: gcloud
+images:
+  - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+options:
+  substitutionOption: ALLOW_LOOSE
+substitutions:
+  _PLATFORM: managed
+  _SERVICE_NAME: flask-microservice-kk
+  _LABELS: gcb-trigger-id=633f087b-0e54-4eae-ad64-67168bef55aa
+  _TRIGGER_ID: 633f087b-0e54-4eae-ad64-67168bef55aa
+  _DEPLOY_REGION: us-central1
+  _GCR_HOSTNAME: us.gcr.io
+tags:
+  - gcp-cloud-build-deploy-cloud-run
+  - gcp-cloud-build-deploy-cloud-run-managed
+  - flask-microservice-kk
+
+```
+
 ## Testing 
 
-TO BE COMPLETED
+**TO BE COMPLETED:**
 
-1. Unit test
-2. Integration test
-3. Deploy test
+1. Unit tests
+2. Integration tests
+3. Deploy tests
 
 ## Authentication and Authorization
 
-TO BE COMPLETED
+**TO BE COMPLETED:**
+
+- Set up OAuth on endpoint so that only credentialed access is allowed 
+  - this can look different depending on the goals of the app, which is part of why I didn't focus on it
+  - For example, if this api were meant to be hit from the front end, I might have a user go through a sign on process using google credentials, and allow access to the endpoint only for authenticated users
+  - If this api were meant to be hit by the server, then I might want to secure it using a client credentials grant type 
+- Create service accounts w/ principal of least privilege - one for deployment of the app, and one for the app itself to use while running in the cloud (right now, running w/ default service accounts)
