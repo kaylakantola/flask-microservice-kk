@@ -8,9 +8,9 @@ It has one endpoint which accepts an HTTP `POST` request. A user of the app can 
 
 The app automatically deploys to the Google Cloud Platform on merge to the `main` branch.
 
-## Getting Started - User
+## Getting Started for User
 
-> If you're looking for the developer documentation, skip down to ["Getting Started - Developer"](#Getting-Started-Developer).
+> If you're looking for the developer documentation, skip down to ["Getting Started - Developer"](#getting-started-for-developer).
 
 ### Request
 
@@ -113,9 +113,9 @@ If an unexpected error occurs, you will get a response like this:
 As you can see above, the response will include a hint as to what is causing the error.
 
 
-## Getting Started - Developer
+## Getting Started for Developer
 
-> If you're looking for the user documentation, skip down to ["Getting Started - User"](#Getting-Started-User).
+> If you're looking for the user documentation, skip up to ["Getting Started - User"](#getting-started-for-user).
 
 
 ### Installing the project
