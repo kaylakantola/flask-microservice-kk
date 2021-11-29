@@ -164,6 +164,8 @@ It's listening for pull requests to the `main` branch. On successful merge a bui
 
 **TO BE COMPLETED:**
 
+Need to set up blue-green deploy so that there's no downtime between deployments.
+
 In an ideal future state, I would like to [terraform the build trigger](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudbuild_trigger) (rather than create thru the GUI). 
 
 Here's the YAML for the build trigger that would need to be transformed into IaC: 
