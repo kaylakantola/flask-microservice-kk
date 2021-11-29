@@ -4,9 +4,9 @@
 
 This is an example Flask microservice deployed to Google Cloud Platform as a Cloud Run app. 
 
-It has one endpoint which accepts an HTTP `POST` request. A user of the app can send in a string, and the app will return the string reversed and capitalized. The
+It has one endpoint which accepts an HTTP `POST` request. A user of the app can send in a string, and the app will return the string reversed and capitalized.
 
-The app automatically deploys to Google Cloud Run on merge to the `main` branch.
+The app automatically deploys to the Google Cloud Platform on merge to the `main` branch.
 
 ## Getting Started - User
 
@@ -154,9 +154,9 @@ This repo is set up with automated CI/CD.
 To deploy your changes to the cloud, there are two options:
 
 1. Push directly to the `main` branch (risky!)
-2. Set up a pull request into `main`, and include `/gcbrun` in the merge request description (less risky!)
+2. Set up a pull request into `main`, and include `/gcbrun` in the merge request description (less risky!). When the MR is merged, it will deploy.
 
-### How does it work? 
+### How It Works 
 
 In the cloud environment, there is a [Build Trigger](https://cloud.google.com/build/docs/automating-builds/create-manage-triggers) connected to the GitHub repository.
 
@@ -164,7 +164,7 @@ It's listening for pull requests to the `main` branch. On successful merge a bui
 
 **TO BE COMPLETED:**
 
-In an ideal future state, I would like to terraform the build trigger (rather than create thru the GUI). 
+In an ideal future state, I would like to [terraform the build trigger](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudbuild_trigger) (rather than create thru the GUI). 
 
 Here's the YAML for the build trigger that would need to be transformed into IaC: 
 
