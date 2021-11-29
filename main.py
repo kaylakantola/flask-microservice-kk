@@ -61,9 +61,3 @@ def reverse_shout():
         return endpoint_response
     except Exception as err:
         return {"error": f"Something broke, here's a hint: {err}"}, 500
-
-
-# Load testing
-@app.route("/loaderio-6d44e3a83fc245de7faff2cc9041d61f.txt")
-def loader():
-    return 'loaderio-6d44e3a83fc245de7faff2cc9041d61f'

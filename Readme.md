@@ -164,7 +164,7 @@ It's listening for pull requests to the `main` branch. On successful merge a bui
 
 **TO BE COMPLETED:**
 
-Need to set up blue-green deploy so that there's no downtime between deployments.
+THERE WILL BE DOWNTIME between deploys!  Need to set up blue-green deploy so that there's no downtime between deployments.
 
 In an ideal future state, I would like to [terraform the build trigger](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudbuild_trigger) (rather than create thru the GUI). 
 
@@ -236,3 +236,15 @@ tags:
   - For example, if this api were meant to be hit from the front end, I might have a user go through a sign on process using google credentials, and allow access to the endpoint only for authenticated users
   - If this api were meant to be hit by the server, then I might want to secure it using a client credentials grant type 
 - Create service accounts w/ principal of least privilege - one for deployment of the app, and one for the app itself to use while running in the cloud (right now, running w/ default service accounts)
+
+## Performance 
+
+I used loader.io's free tier to perform basic performance testing. 
+
+Here are the results:
+
+![loader](docs/loader.png)
+
+This is my first attempt at load testing this app, so this would be used as a baseline to make future improvements.
+
+
