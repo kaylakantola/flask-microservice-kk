@@ -1,7 +1,6 @@
 import json
 from flask import Flask, request
 import requests
-from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
