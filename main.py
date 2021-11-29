@@ -52,7 +52,7 @@ def reverse_shout():
         valid_input = validate_input(user_input)
 
         if valid_input is False:
-            return ({"error": f"Request body must contain 'data' parameter set to a string with a length greater than 0."}, 400)
+            return {"error": f"Request body must contain 'data' parameter set to a string with a length greater than 0."}, 400
 
         shoutcloud_payload = build_shoutcloud_payload(user_input['data'])
         shoutcloud_response = post_to_shoutcloud(shoutcloud_payload)
@@ -60,4 +60,10 @@ def reverse_shout():
         endpoint_response = build_endpoint_response(shoutcloud_response_reversed)
         return endpoint_response
     except Exception as err:
-        return ({"error": f"Something broke, here's a hint: {err}"}, 500)
+        return {"error": f"Something broke, here's a hint: {err}"}, 500
+
+
+# Load testing
+@app.route("/loaderio-6d44e3a83fc245de7faff2cc9041d61f.txt")
+def loader():
+    return 'loaderio-6d44e3a83fc245de7faff2cc9041d61f'
